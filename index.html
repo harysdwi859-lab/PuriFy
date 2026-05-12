@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PuriFy – Music</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════════════ -->
+<div id="login-screen" class="screen active">
+  <div class="login-bg">
+    <div class="login-blob b1"></div>
+    <div class="login-blob b2"></div>
+    <div class="login-blob b3"></div>
+  </div>
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="20" fill="var(--accent)"/>
+        <path d="M14 28V14l18 7-18 7z" fill="white"/>
+      </svg>
+      <span>PuriFy</span>
+    </div>
+    <h1>Masuk ke akun kamu</h1>
+    <p class="login-sub">Nikmati jutaan lagu, kapan saja.</p>
+    <div class="field">
+      <label>Username</label>
+      <input id="inp-user" type="text" placeholder="masukkan username" autocomplete="username"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="inp-pass" type="password" placeholder="masukkan password" autocomplete="current-password"/>
+    </div>
+    <div id="login-error" class="error-msg hidden"></div>
+    <button id="btn-login" class="btn-primary">
+      <span>Masuk</span>
+      <div class="btn-spinner hidden"></div>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     APP SCREEN
+══════════════════════════════════════════════ -->
+<div id="app-screen" class="screen">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="20" fill="var(--accent)"/>
+        <path d="M14 28V14l18 7-18 7z" fill="white"/>
+      </svg>
+      <span>PuriFy</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="home">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Beranda</span>
+      </a>
+      <a href="#" class="nav-item" data-page="search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Cari</span>
+      </a>
+      <a href="#" class="nav-item" data-page="playlist">
+        <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span>Playlist</span>
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-chip">
+        <div class="user-avatar" id="sidebar-avatar"></div>
+        <span id="sidebar-username"></span>
+      </div>
+      <button id="btn-logout" title="Logout">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- PAGE: HOME -->
+    <div id="page-home" class="page active">
+      <div class="page-header">
+        <h2 id="greeting"></h2>
+        <p>Rekomendasi untukmu hari ini</p>
+      </div>
+      <div id="reco-grid" class="song-grid">
+        <div class="loading-pulse">
+          <div class="pulse-card"></div><div class="pulse-card"></div>
+          <div class="pulse-card"></div><div class="pulse-card"></div>
+          <div class="pulse-card"></div><div class="pulse-card"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: SEARCH -->
+    <div id="page-search" class="page">
+      <div class="page-header">
+        <h2>Cari Lagu</h2>
+      </div>
+      <div class="search-bar-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search-input" type="text" placeholder="Ketik nama lagu, artis..." autocomplete="off"/>
+        <div id="search-spinner" class="search-spinner hidden"></div>
+      </div>
+      <div id="search-results" class="song-list"></div>
+    </div>
+
+    <!-- PAGE: PLAYLIST -->
+    <div id="page-playlist" class="page">
+      <div class="page-header">
+        <h2>Playlist Saya</h2>
+        <p id="playlist-count">0 lagu</p>
+      </div>
+      <div id="playlist-list" class="song-list"></div>
+      <div id="playlist-empty" class="empty-state hidden">
+        <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <p>Playlist masih kosong.<br/>Tambahkan lagu favoritmu!</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- LYRICS PANEL -->
+  <div id="lyrics-panel" class="lyrics-panel">
+    <div class="lyrics-header">
+      <span>Lirik</span>
+      <button id="lyrics-close">✕</button>
+    </div>
+    <div id="lyrics-body" class="lyrics-body">
+      <p class="lyrics-placeholder">Pilih lagu untuk melihat lirik</p>
+    </div>
+  </div>
+
+</div><!-- /app-screen -->
+
+<!-- ══════════════════════════════════════════════
+     PLAYER BAR
+══════════════════════════════════════════════ -->
+<div id="player-bar" class="player-bar hidden">
+  <div class="player-song-info">
+    <img id="player-thumb" src="" alt="" />
+    <div>
+      <div id="player-title" class="player-title"></div>
+      <div id="player-artist" class="player-artist"></div>
+    </div>
+    <button id="btn-add-playlist" class="icon-btn" title="Tambah ke Playlist">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+
+  <div class="player-center">
+    <!-- YouTube IFrame Embed (hidden, audio only) -->
+    <div id="yt-player-wrap">
+      <div id="yt-player"></div>
+    </div>
+    <div class="player-controls">
+      <button id="btn-prev" class="ctrl-btn">
+        <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="4" x2="5" y2="20"/></svg>
+      </button>
+      <button id="btn-play" class="ctrl-btn play-btn">
+        <svg id="ico-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <svg id="ico-pause" viewBox="0 0 24 24" class="hidden"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <button id="btn-next" class="ctrl-btn">
+        <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="4" x2="19" y2="20"/></svg>
+      </button>
+    </div>
+    <div class="player-progress">
+      <span id="time-current">0:00</span>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <span id="time-total">0:00</span>
+    </div>
+  </div>
+
+  <div class="player-right">
+    <button id="btn-lyrics" class="icon-btn" title="Lirik">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    </button>
+    <button id="btn-download" class="icon-btn" title="Download">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </button>
+    <div class="volume-wrap">
+      <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+      <input type="range" id="volume-slider" min="0" max="100" value="80" />
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- CONTEXT MENU -->
+<div id="ctx-menu" class="ctx-menu hidden">
+  <button id="ctx-add">➕ Tambah ke Playlist</button>
+  <button id="ctx-download">⬇️ Download</button>
+  <button id="ctx-lyrics">🎵 Lihat Lirik</button>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="app.js"></script>
+</body>
+</html>
